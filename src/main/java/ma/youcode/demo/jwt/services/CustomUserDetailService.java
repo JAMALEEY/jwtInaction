@@ -13,8 +13,8 @@ public class CustomUserDetailService implements UserDetailsService {
 
     // this method do the validation to see if the user exists
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if(username.equals(("yasser"))){ // we can call the db using repository so that we can check the availability of the user inthe db
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        if(userName.equals("yasser")){ // we can call the db using repository so that we can check the availability of the user inthe db
             return new User("yasser", "pass", new ArrayList<>());
         } else {
             // UsernameNotFoundException prebuilt method
