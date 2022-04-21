@@ -1,6 +1,7 @@
 package ma.youcode.demo.jwt.config;
 
 
+import ma.youcode.demo.jwt.filter.JwtAuthenticationFilter;
 import ma.youcode.demo.jwt.services.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
@@ -21,6 +23,9 @@ public class JwtConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private CustomUserDetailService customUserDetailService;
+
+    @Autowired
+    private JwtAuthenticationFilter jwtFilter;
 
     // what is our auth mode (how to manage our auth process)
     @Override
@@ -40,7 +45,11 @@ public class JwtConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated() //other requests besides generateToken are conditioned to authentication
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //the requests are independent regarding each other, the server dont manage the session
+
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
+
 
     @Bean
     public PasswordEncoder passwordEncoder(){
