@@ -15,14 +15,14 @@ public class UserEntity {
     private Long id;
 
     @Column(name = "USER_NAME", nullable = false)
-    private String userName;
+    private String username;
     private String password;
     private String firstName;
     private String lastName;
     private String email;
     private String phone;
 
-    @JsonManagedReference // it helps avoiding circular dependency in bidirectionnal mapping
+//    @JsonManagedReference // it helps avoiding circular dependency in bidirectionnal mapping
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "USER_ROLE",
             joinColumns = { @JoinColumn(name = "user_id")},
@@ -45,12 +45,12 @@ public class UserEntity {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

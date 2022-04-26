@@ -24,7 +24,7 @@ public class UserModel implements UserDetails {
     private String lastName;
     private String email;
     private String phone;
-    private Set<RoleEntity> roles = new HashSet<>();
+    private Set<RoleModel> roles = new HashSet<>();
 
 //    @Autowired
 //    private UserRepository userRepository;
@@ -88,11 +88,11 @@ public class UserModel implements UserDetails {
         this.phone = phone;
     }
 
-    public Set<RoleEntity> getRoles() {
+    public Set<RoleModel> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<RoleEntity> roles) {
+    public void setRoles(Set<RoleModel> roles) {
         this.roles = roles;
     }
 

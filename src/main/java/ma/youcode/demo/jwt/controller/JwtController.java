@@ -13,10 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/api")
@@ -41,7 +40,7 @@ public class JwtController {
     }
 
 // similar to theo ne in jwtConfig that is public to all users !s
-    @PostMapping("/generateToken")
+    @PostMapping("/login")
     public ResponseEntity<JwtResponse> generateToken(@RequestBody JwtRequest jwtRequest){
         // model
 //        authenticate the user
@@ -59,5 +58,12 @@ public class JwtController {
         JwtResponse jwtResponse = new JwtResponse(jwtToken);
 //        return ResponseEntity.ok(jwtResponse);
         return new ResponseEntity<JwtResponse>(jwtResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/currentUser")
+    public UserModel  getCurrentUser(Principal principal) {
+              UserDetails userDetails =  this.customUserDetailService.loadUserByUsername(
+                      principal.getName());
+              return (UserModel) userDetails;
     }
 }
