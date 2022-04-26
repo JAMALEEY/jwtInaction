@@ -42,6 +42,10 @@ public class JwtConfig extends WebSecurityConfigurerAdapter {
                 .cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/generateToken").permitAll() //permession to access publically this endpoints
+                .and()
+                .authorizeRequests().antMatchers("/api/roles").permitAll()
+                .and()
+                .authorizeRequests().antMatchers("/h2_console/**").permitAll()
                 .anyRequest().authenticated() //other requests besides generateToken are conditioned to authentication
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //the requests are independent regarding each other, the server dont manage the session

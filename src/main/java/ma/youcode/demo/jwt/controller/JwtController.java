@@ -2,8 +2,10 @@ package ma.youcode.demo.jwt.controller;
 
 import ma.youcode.demo.jwt.model.JwtRequest;
 import ma.youcode.demo.jwt.model.JwtResponse;
+import ma.youcode.demo.jwt.model.UserModel;
 import ma.youcode.demo.jwt.services.CustomUserDetailService;
 import ma.youcode.demo.jwt.util.JwtUtil;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.CustomAutowireConfigurer;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,14 @@ public class JwtController {
     @Autowired
     private CustomUserDetailService customUserDetailService;
 
+    @PostMapping("/register")
+    public ResponseEntity<UserModel> register(@RequestBody
+                                              UserModel userModel
+    ) {
+        UserModel userModel1 = customUserDetailService.register(userModel);
+        ResponseEntity<UserModel> responseEntity = new ResponseEntity<>(userModel1, HttpStatus.CREATED);
+    return responseEntity;
+    }
 
 // similar to theo ne in jwtConfig that is public to all users !s
     @PostMapping("/generateToken")
