@@ -9,9 +9,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 
 @Service
 public class CustomUserDetailService implements UserDetailsService {
@@ -19,9 +18,13 @@ public class CustomUserDetailService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     public UserModel register(UserModel userModel){
         UserEntity userEntity = new UserEntity();
         BeanUtils.copyProperties(userModel, userEntity);
+        userEntity.setPassword(this.passwordEncoder.encode(userEntity.getPassword()));
         userEntity =  userRepository.save(userEntity);
         BeanUtils.copyProperties(userEntity, userModel);
         return userModel;
@@ -30,12 +33,10 @@ public class CustomUserDetailService implements UserDetailsService {
     // this method do the validation to see if the user exists
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        UserEntity userEntity = userRepository.findByUsername(
-                userName
-        );
+        UserEntity userEntity = userRepository.findByUsername(userName);
 
 
-        if(userEntity == null){ // we can call the db using repository so that we can check the availability of the user inthe db
+        if(userName == null){ // we can call the db using repository so that we can check the availability of the user inthe db
             // UsernameNotFoundException prebuilt method
             throw new UsernameNotFoundException("User doesn't exist !");
         } else {
